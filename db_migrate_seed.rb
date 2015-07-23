@@ -3,7 +3,7 @@ require './environment.rb'
 
 # WARNING!
 # THIS IS DESTRUCTIVE.
-DB.execute("drop table #{posts.table_name}")
+DB.execute("drop table #{Post.table_name}")
 
 
 
@@ -20,7 +20,7 @@ DB.execute("drop table #{posts.table_name}")
 # you can replace with any other characters you want
 # as long as you follow the pattern
 sql_string = <<SQL
-  create table #{Posts.table_name} (
+  create table #{Post.table_name} (
     id INTEGER PRIMARY KEY,
     title VARCHAR(30),
     body VARCHAR(32000))
