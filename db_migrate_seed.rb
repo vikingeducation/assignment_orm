@@ -1,7 +1,12 @@
 require './environment.rb'
 
 
-#RUN THIS FILE ONLY ONCE
+# WARNING!
+# THIS IS DESTRUCTIVE.
+DB.execute("drop table #{posts.table_name}")
+
+
+
 
 
 
@@ -15,7 +20,7 @@ require './environment.rb'
 # you can replace with any other characters you want
 # as long as you follow the pattern
 sql_string = <<SQL
-  create table posts (
+  create table #{Posts.table_name} (
     id INTEGER PRIMARY KEY,
     title VARCHAR(30),
     body VARCHAR(32000))
@@ -49,7 +54,7 @@ bodies = ['I am the very model of a modern major general',
 titles.length.times do |i|
 
   insert_string = <<INSERTSTRING
-    INSERT INTO posts(id, title, body)
+    INSERT INTO #{Post.table_name} (id, title, body)
     VALUES (null, "#{titles[i]}", "#{bodies[i]}");
 INSERTSTRING
 

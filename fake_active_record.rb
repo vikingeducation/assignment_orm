@@ -26,6 +26,20 @@ module FakeActiveRecord
       @schema
     end
 
+    # convenience wrapper for your schema's column names
+    def self.columns
+      schema.keys
+    end
+
+
+
+
+
+    # YOUR CODE GOES HERE
+
+
+
+
 
   end
 end
