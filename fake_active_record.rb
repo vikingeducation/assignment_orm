@@ -31,16 +31,40 @@ module FakeActiveRecord
       schema.keys
     end
 
-
+  end
 
 
 
     # YOUR CODE GOES HERE
+    class Article
+    # notice that this is a CLASS method
+      def self.all
+          "SELECT articles.*"
+      end
+
+      def self.find(id)
+        "SELECT * FROM articles WHERE article.id = id LIMIT 1"
+      end
+
+      def self.first
+        "SELECT * FROM articles ORDER BY id LIMIT 1"
+      end
+
+      def self.last
+        "SELECT * FROM articles ORDER BY id DESC LIMIT 1"
+      end
+        
+        
+      def self.select(*arg)
+        'SELECT #{arg.join(", )} FROM articles'
+      end
+
+    end
 
 
 
 
 
-  end
+  
 end
 
