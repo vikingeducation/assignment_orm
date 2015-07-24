@@ -1,5 +1,8 @@
 module FakeActiveRecord
   class BASE
+
+    include Article
+
     # CLASS method on any
     # model object
     # that returns pluralized
@@ -35,36 +38,46 @@ module FakeActiveRecord
 
 
 
-    # YOUR CODE GOES HERE
-    class Article
-    # notice that this is a CLASS method
-      def self.all
-          "SELECT articles.*"
-      end
+  # YOUR CODE GOES HERE
+  class Article
+  # notice that this is a CLASS method
+    def self.all
+        "SELECT * FROM #{self.table_name}"
+    end
 
-      def self.find(id)
-        "SELECT * FROM articles WHERE article.id = id LIMIT 1"
-      end
+    def self.find(*array_id)
+      "SELECT * FROM #{self.table_name} WHERE article.id IN (#{array_id.join(", ")})"
+    end
 
-      def self.first
-        "SELECT * FROM articles ORDER BY id LIMIT 1"
-      end
+    def self.first
+      "SELECT * FROM #{self.table_name} ORDER BY id LIMIT 1"
+    end
 
-      def self.last
-        "SELECT * FROM articles ORDER BY id DESC LIMIT 1"
-      end
-        
-        
-      def self.select(*arg)
-        'SELECT #{arg.join(", )} FROM articles'
-      end
+    def self.last
+      "SELECT * FROM #{self.table_name} ORDER BY id DESC LIMIT 1"
+    end
 
+    def self.select(*arg)
+      raise "Column does not exist" unless arg.all? { |col| self.columns.include?(col)  }
+      'SELECT #{arg.join(", )} FROM #{self.table_name}'
     end
 
 
+    def self.count
+      'SELECT COUNT(*) FROM #{self.table_name}'
+    end
 
+    def self.where(*columns)
+      raise "Column does not exist" unless columns.all? { |col| self.columns.include?(col)  }
+      query = []
+      columns.each do |key, value|
+        query << "#{key} = #{value}"
+      end
 
+      'SELECT * FROM #{self.table_name} WHERE #{query.join(" AND ")}'
+    end
 
+  end
   
 end
 
