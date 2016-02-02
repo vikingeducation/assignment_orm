@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Article	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^class Article$/;"	c
+BASE	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^  class BASE$/;"	c	class:FakeActiveRecord
+FakeActiveRecord	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^module FakeActiveRecord$/;"	m
+Post	/Users/kitlangton/Viking/Unit9/assignment_orm/post.rb	/^class Post < FakeActiveRecord::BASE$/;"	c
+all	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.all$/;"	F	class:Article
+all	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.all$/;"	F	class:FakeActiveRecord.BASE
+columns	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.columns$/;"	F	class:FakeActiveRecord.BASE
+count	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.count$/;"	F	class:Article
+count	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.count$/;"	F	class:FakeActiveRecord.BASE
+create	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.create(opts)$/;"	F	class:FakeActiveRecord.BASE
+find	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.find(*args)$/;"	F	class:Article
+find	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.find(*args)$/;"	F	class:FakeActiveRecord.BASE
+first	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.first$/;"	F	class:Article
+first	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.first$/;"	F	class:FakeActiveRecord.BASE
+last	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.last$/;"	F	class:Article
+last	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.last$/;"	F	class:FakeActiveRecord.BASE
+schema	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.schema$/;"	F	class:FakeActiveRecord.BASE
+select	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.select(*args)$/;"	F	class:Article
+select	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.select(*args)$/;"	F	class:FakeActiveRecord.BASE
+table_name	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.table_name$/;"	F	class:FakeActiveRecord.BASE
+where	/Users/kitlangton/Viking/Unit9/assignment_orm/article.rb	/^  def self.where(opts)$/;"	F	class:Article
+where	/Users/kitlangton/Viking/Unit9/assignment_orm/fake_active_record.rb	/^    def self.where(opts)$/;"	F	class:FakeActiveRecord.BASE
