@@ -67,9 +67,11 @@ module FakeActiveRecord
     end
 
     def self.where(opts)
-      stm = DB.prepare("SELECT #{table_name}.* FROM #{table_name} WHERE " + opts.to_a.map { |key, value| "?='?'"}.join(" AND "))
-
-      stm.bind_params *(opts.to_a.flatten.map(&:to_s))
+      opts.keys.each do |opt|
+        return false unless columns.include?(opt.to_s)
+      end
+      stm = DB.prepare("SELECT #{table_name}.* FROM #{table_name} WHERE " + opts.to_a.map { |key, value| "#{key} = ?"}.join(" AND "))
+      stm.bind_params *(opts.values)
       stm.execute.to_a
     end
 
