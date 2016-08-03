@@ -52,6 +52,7 @@ module FakeActiveRecord
       end
 
       def select(*cols)
+        raise if cols.none? { |c| columns.include(c) }
         col_str = cols.map { |c| "#{table_name}.#{c}" }.join(", ")
         "SELECT #{col_str} FROM #{table_name}"
       end
@@ -61,6 +62,7 @@ module FakeActiveRecord
       end
 
       def where(pairs={})
+        raise if pairs.keys.none? { |c| columns.include(c) }
         conditions = pairs.map { |p| "#{p[0]}=#{p[1]}" }.join(" AND ")
         "SELECT * FROM #{table_name} WHERE #{conditions}"
       end
