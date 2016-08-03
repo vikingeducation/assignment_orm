@@ -8,14 +8,13 @@ module FakeActiveRecord
     class << self
 
       def create(pairs={})
-        cols = "(#{pairs.keys.join(", ")})"
-        vals = "(#{pairs.values.join(", ")})"
+        cols = "#{pairs.keys.join(", ")}"
+        vals = "#{pairs.values.map{|v| "\'#{v}\'"}.join(", ")}"
           insert_string = <<INSERTSTRING
-        }
-    INSERT INTO #{table_name} #{cols}
-    VALUES #{vals};
+    INSERT INTO #{table_name} (#{cols})
+    VALUES (#{vals});
 INSERTSTRING
-
+          # p insert_string
           DB.execute(insert_string)
       end
 
@@ -82,14 +81,5 @@ INSERTSTRING
 
     end
 
-
-
-    # YOUR CODE GOES HERE
-
-
-
-
-
   end
 end
-

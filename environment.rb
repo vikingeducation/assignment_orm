@@ -15,3 +15,14 @@ require './fake_active_record.rb'
 
 # requires the model object you're working with
 require './post.rb'
+
+
+module FakeActiveRecord
+
+  class Post < FakeActiveRecord::BASE
+  end
+
+end
+
+Post.create({id: "null", title: "The Post", body: "This is a post."})
+# puts Post.first
