@@ -85,7 +85,7 @@ INSERTSTRING
 
       def where(pairs={})
         raise if pairs.keys.none? { |c| columns.include?(c.to_s) }
-        conditions = pairs.map { |p| "#{p[0]}=#{p[1]}" }.join(" AND ")
+        conditions = pairs.map { |p| "#{p[0]}=\'#{p[1]}\'" }.join(" AND ")
         DB.execute "SELECT * FROM #{table_name} WHERE #{conditions}"
       end
 
