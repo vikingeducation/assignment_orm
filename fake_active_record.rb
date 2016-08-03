@@ -1,9 +1,5 @@
 module FakeActiveRecord
   class BASE
-    # CLASS method on any
-    # model object
-    # that returns pluralized
-    # version of class name
 
     class << self
 
@@ -25,7 +21,6 @@ SQL
     INSERT INTO #{table_name} (#{cols})
     VALUES (#{vals});
 INSERTSTRING
-          # p insert_string
           DB.execute(insert_string)
       end
 
