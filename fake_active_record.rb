@@ -7,6 +7,18 @@ module FakeActiveRecord
 
     class << self
 
+      def create(pairs={})
+        cols = "(#{pairs.keys.join(", ")})"
+        vals = "(#{pairs.values.join(", ")})"
+          insert_string = <<INSERTSTRING
+        }
+    INSERT INTO #{table_name} #{cols}
+    VALUES #{vals};
+INSERTSTRING
+
+          DB.execute(insert_string)
+      end
+
       def table_name
         "#{self.name.downcase}s"
       end
