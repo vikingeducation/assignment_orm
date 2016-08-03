@@ -7,6 +7,17 @@ module FakeActiveRecord
 
     class << self
 
+      # Create table.
+      def init
+        sql_string = <<SQL
+          create table #{table_name} (
+            id INTEGER PRIMARY KEY,
+            title VARCHAR(30),
+            body VARCHAR(32000))
+SQL
+        DB.execute(sql_string)
+      end
+
       def create(pairs={})
         cols = "#{pairs.keys.join(", ")}"
         vals = "#{pairs.values.map{|v| "\'#{v}\'"}.join(", ")}"
@@ -46,36 +57,36 @@ INSERTSTRING
       end
 
       def all
-        "SELECT * FROM #{table_name}"
+        DB.execute "SELECT * FROM #{table_name}"
       end
 
       def find(*ids)
         ids_str = "(#{ids.join(", ")})"
-        "SELECT * FROM #{table_name} WHERE #{table_name}.id IN #{ids_str}"
+        DB.execute "SELECT * FROM #{table_name} WHERE #{table_name}.id IN #{ids_str}"
       end
 
       def first
-        "SELECT * FROM #{table_name} LIMIT 1"
+        DB.execute "SELECT * FROM #{table_name} LIMIT 1"
       end
 
       def last
-        "SELECT * FROM #{table_name} ORDER BY #{table_name}.id DESC LIMIT 1"
+        DB.execute "SELECT * FROM #{table_name} ORDER BY #{table_name}.id DESC LIMIT 1"
       end
 
       def select(*cols)
-        raise if cols.none? { |c| columns.include(c) }
+        raise if cols.none? { |c| columns.include?(c.to_s) }
         col_str = cols.map { |c| "#{table_name}.#{c}" }.join(", ")
-        "SELECT #{col_str} FROM #{table_name}"
+        DB.execute "SELECT #{col_str} FROM #{table_name}"
       end
 
       def count
-        "SELECT COUNT(#{table_name}.*) FROM #{table_name}"
+        DB.execute "SELECT COUNT(*) FROM #{table_name}"
       end
 
       def where(pairs={})
-        raise if pairs.keys.none? { |c| columns.include(c) }
+        raise if pairs.keys.none? { |c| columns.include?(c.to_s) }
         conditions = pairs.map { |p| "#{p[0]}=#{p[1]}" }.join(" AND ")
-        "SELECT * FROM #{table_name} WHERE #{conditions}"
+        DB.execute "SELECT * FROM #{table_name} WHERE #{conditions}"
       end
 
 
