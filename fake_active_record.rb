@@ -34,6 +34,38 @@ module FakeActiveRecord
         schema.keys
       end
 
+      def all
+        "SELECT * FROM #{table_name}"
+      end
+
+      def find(*ids)
+        ids_str = "(#{ids.join(", ")})"
+        "SELECT * FROM #{table_name} WHERE #{table_name}.id IN #{ids_str}"
+      end
+
+      def first
+        "SELECT * FROM #{table_name} LIMIT 1"
+      end
+
+      def last
+        "SELECT * FROM #{table_name} ORDER BY #{table_name}.id DESC LIMIT 1"
+      end
+
+      def select(*cols)
+        col_str = cols.map { |c| "#{table_name}.#{c}" }.join(", ")
+        "SELECT #{col_str} FROM #{table_name}"
+      end
+
+      def count
+        "SELECT COUNT(#{table_name}.*) FROM #{table_name}"
+      end
+
+      def where(pairs={})
+        conditions = pairs.map { |p| "#{p[0]}=#{p[1]}" }.join(" AND ")
+        "SELECT * FROM #{table_name} WHERE #{conditions}"
+      end
+
+
     end
 
 
