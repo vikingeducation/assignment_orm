@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 module FakeActiveRecord
   class BASE
     # CLASS method on any
@@ -37,74 +39,85 @@ module FakeActiveRecord
 
     # YOUR CODE GOES HERE
     def self.all
-      DB.execute("SELECT #{self.table_name}.* FROM #{self.table_name}")
+      DB.execute("SELECT #{table_name}.* FROM #{table_name}")
     end
 
     def self.find(*id)
-      id = id.join(', ')
-      DB.execute("SELECT #{self.table_name}.* FROM #{self.table_name} WHERE #{self.table_name}.id IN (#{id})")
+      q = Array.new(id.size){ '?' }.join(', ')
+      statement = "SELECT #{table_name}.* FROM #{table_name} WHERE #{table_name}.id IN (#{q})"
+      executor(statement, id)
     end
 
     def self.first
-      DB.execute("SELECT #{self.table_name}.* FROM #{self.table_name} ORDER BY #{self.table_name}.id LIMIT 1")
+      DB.execute("SELECT #{table_name}.* FROM #{table_name} ORDER BY #{table_name}.id LIMIT 1")
     end
 
     def self.last
-      DB.execute("SELECT #{self.table_name}.* FROM #{self.table_name} ORDER BY #{self.table_name}.id DESC LIMIT 1")
+      DB.execute("SELECT #{table_name}.* FROM #{table_name} ORDER BY #{table_name}.id DESC LIMIT 1")
     end
 
     def self.select(*cols)
-      self.schema
       if cols.empty?
-        cols = "#{self.table_name}.*"
+        cols = "#{table_name}.*"
       else
         cols = cols.map do |el|
-          el = el.to_s
-          raise 'Column does not exist' if @schema[el].nil?
-          "#{self.table_name}." << el
+          raise "Column #{el} does not exist" unless columns.include?(el.to_s)
+          "#{table_name}." << el.to_s
         end
-        cols = cols.join(', ')
       end
-      DB.execute("SELECT #{cols} FROM #{self.table_name}")
+      DB.execute("SELECT #{cols.join(', ')} FROM #{table_name}")
     end
 
     def self.count
-      DB.execute("SELECT COUNT(*) FROM #{self.table_name}")
+      DB.execute("SELECT COUNT(*) FROM #{table_name}")
     end
 
     def self.where(params={})
-      self.schema
+      schema
       unless params.empty?
-        where = 'WHERE '
-        # where << params.map {|k, v| k.to_s + '=' + v}.join(' AND ')
-        params =  params.map do |k, v|
+        keys = []
+        params.each do |k, v|
           k = k.to_s
-          raise 'Column does not exist' if @schema[k].nil?
-          k << " = '" + v + "'"
+          raise "Column #{k} does not exist" unless columns.include?(k)
+          keys << k + '= ?'
         end
-        where << params.join(' AND ')
+        where = 'WHERE ' << keys.join(' AND ')
       end
-      DB.execute("SELECT #{self.table_name}.* FROM #{self.table_name} #{where}")
+      executor("SELECT #{table_name}.* FROM #{table_name} #{where}", params.values)
+
     end
 
     def self.create(cols={})
-      self.schema
       raise "Nothing to create!" if cols.empty?
-      keys, vals = [], []
-      cols.each do |k, v|
-        k = k.to_s
-        raise 'Column does not exist' if @schema[k].nil?
-        keys << k
-        vals << "'" + v.to_s + "'"
-      end
-      keys = keys.join(', ')
-      vals = vals.join(', ')
-      DB.execute("INSERT INTO #{self.table_name} (#{keys})
-      VALUES (#{vals})")
+      keys = cols.keys.each { |k|  raise 'Column does not exist' unless columns.include?(k.to_s) }.join(', ')
+      statement = "INSERT INTO #{table_name} (#{keys}) VALUES (#{Array.new(cols.values.size, '?').join(', ')})"
+      executor(statement, cols.values)
       puts "The following post was created:"
-      print self.last
+      print last
     end
 
+    private
 
+    def self.executor(statement, vars)
+      begin
+
+        s = DB.prepare statement
+        s.bind_params *(vars)
+        rows = s.execute
+        rows.to_a
+
+      rescue SQLite3::Exception => e
+
+        puts "Exception occurred"
+        puts e
+
+      end
+
+    end
   end
+
+
+
+
+
 end
