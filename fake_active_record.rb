@@ -31,11 +31,66 @@ module FakeActiveRecord
       schema.keys
     end
 
-
-
-
-
     # YOUR CODE GOES HERE
+    def self.all
+      "SELECT self.talbe_name.*"
+      DB.execute(Post.table_name)
+    end
+
+    def self.find(id)
+      "SELECT id
+      FROM self.talbe_name"
+      DB.execute(Post.table_name)
+    end
+
+    def self.first
+      "SELECT self.talbe_name.*
+      LIMIT 1"
+      DB.execute(Post.table_name)
+    end
+
+    def self.last
+      "SELECT self.talbe_name.*
+      LIMIT 1
+      ORDER DESC"
+      DB.execute(Post.table_name)
+    end
+
+    def self.select(params)
+      "SELECT params
+      FROM self.talbe_name"
+      if schema !include(params)
+        raise "error"
+      end
+      DB.execute(Post.table_name)
+    end
+
+    def self.count
+      "SELECT COUNT(*)
+      FROM self.talbe_name"
+      DB.execute(Post.table_name)
+    end
+
+    def self.ids(id_arr)
+      id_arr.each do |id|
+        "SELECT id
+        FROM self.talbe_name"
+        if schema !include(params)
+          raise "error"
+        end
+      end
+      DB.execute(Post.table_name)
+    end
+
+    def self.where(param_hash)
+      "SELECT self.talbe_name.*
+      FROM self.talbe_name
+      WHERE param_hash"
+      if schema !include(params)
+        raise "error"
+      end
+      DB.execute(Post.table_name)
+    end
 
 
 
@@ -43,4 +98,3 @@ module FakeActiveRecord
 
   end
 end
-
